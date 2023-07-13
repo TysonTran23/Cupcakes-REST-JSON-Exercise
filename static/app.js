@@ -42,13 +42,17 @@ $("#new-cupcake-form").on("submit", async function (evt) {
   $("#new-cupcake-form").trigger("reset");
 });
 
-$(".delete-button").click(function () {
-  alert("clicked");
-});
+async function deleteButton(evt) {
+  evt.preventDefault();
+  let $cupcake = $(evt.target).closest("div");
+  console.log($cupcake);
+  let cupcakeId = $cupcake.attr("data-cupcake-id");
+  console.log(cupcakeId);
 
+  response = await axios.delete(`${BASE_URL}/cupcakes/${cupcakeId}`);
+  console.log(response);
+  $cupcake.remove();
+}
 
-// async function deleteButton() {
-//   const id = $(this).data("id");
-//   await axios.delete(`/api/cupcakes/${id}`);
-//   $(this).parent().remove();
-// }
+$("#cupcake-list").on("click", ".delete-button", deleteButton);
+$(ShowInitialCupcake);
